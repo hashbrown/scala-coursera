@@ -75,8 +75,9 @@ object Huffman {
    *       println("integer is  : "+ theInt)
    *   }
    */
-  def times(chars: List[Char]): List[(Char, Int)] = {
-    timesChar(chars.tail, List((chars.head, 1)))
+  def times(chars: List[Char]): List[(Char, Int)] = chars match {
+    case Nil => Nil
+    case (head :: tail) => timesChar(tail, List((head, 1)))
   }
 
   def timesChar(chars: List[Char], acc: List[(Char, Int)]): List[(Char, Int)] = {
@@ -132,8 +133,9 @@ object Huffman {
   /**
    * Checks whether the list `trees` contains only one single code tree.
    */
-  def singleton(trees: List[CodeTree]): Boolean = trees.head match {
-    case l: Leaf => trees.tail isEmpty
+  def singleton(trees: List[CodeTree]): Boolean = trees match {
+    case Nil => false
+    case (head :: tail) => tail.isEmpty
     case _ => false
   }
 
@@ -183,8 +185,9 @@ object Huffman {
    * The parameter `chars` is an arbitrary text. This function extracts the character
    * frequencies from that text and creates a code tree based on them.
    */
-  def createCodeTree(chars: List[Char]): CodeTree = {
-    until(singleton, combine)(makeOrderedLeafList(times(chars))).head
+  def createCodeTree(chars: List[Char]): CodeTree = chars match {
+    case list =>
+      until(singleton, combine)(makeOrderedLeafList(times(list))).head
   }
 
   // Part 3: Decoding

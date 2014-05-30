@@ -10,6 +10,7 @@ import patmat.Huffman._
 @RunWith(classOf[JUnitRunner])
 class HuffmanSuite extends FunSuite {
   trait TestTrees {
+    val t0 = Leaf('a', 2)
     val t1 = Fork(Leaf('a', 2), Leaf('b', 3), List('a', 'b'), 5)
     val t2 = Fork(Fork(Leaf('a', 2), Leaf('b', 3), List('a', 'b'), 5), Leaf('d', 4), List('a', 'b', 'd'), 9)
   }
@@ -39,17 +40,17 @@ class HuffmanSuite extends FunSuite {
     assert(combine(leaflist) === List(Fork(Leaf('e', 1), Leaf('t', 2), List('e', 't'), 3), Leaf('x', 4)))
   }
 
-  //  test("decode and encode a very short text should be identity") {
-  //    new TestTrees {
-  //      assert(decode(t1, encode(t1)("ab".toList)) === "ab".toList)
-  //    }
-  //  }
-  //
-  //  test("decode and encode t2") {
-  //    new TestTrees {
-  //      assert(decode(t2, encode(t2)("abd".toList)) === "abd".toList)
-  //    }
-  //  }
+  test("decode and encode a very short text should be identity") {
+    new TestTrees {
+      assert(decode(t1, encode(t1)("ab".toList)) === "ab".toList)
+    }
+  }
+
+  test("decode and encode t2") {
+    new TestTrees {
+      assert(decode(t2, encode(t2)("abd".toList)) === "abd".toList)
+    }
+  }
 
   test("decode and quickencode t2") {
     new TestTrees {
@@ -59,5 +60,19 @@ class HuffmanSuite extends FunSuite {
 
   test("times") {
     assert(times(List('a', 'b', 'a', 'b', 'c')) == List(('a', 2), ('b', 2), ('c', 1)))
+  }
+
+  test("times of nil") {
+    assert(times(Nil) == Nil)
+  }
+
+  test("singleton of nil") {
+    assert(singleton(Nil) == false)
+  }
+
+  test("singleton true") {
+    new TestTrees {
+      assert(singleton(List(t0)) == true)
+    }
   }
 }
